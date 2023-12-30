@@ -1,0 +1,29 @@
+{
+  "tasks": [
+    {
+      "name": "once per 3 months",
+      "frequency": {
+        "months": 3
+      },
+      "startDate": "2023-10-01",
+      "createCommand": "echo {{.date}}"
+    },
+    {
+      "name": "once per a month",
+      "frequency": {
+        "months": 1
+      },
+      "startDate": "2023-12-01",
+      "createCommand": "echo {{.date}}"
+    },
+    {
+      "name": "once per a week",
+      "frequency": {
+        "weeks": 1
+      },
+      "startDate": "2023-12-04",
+      "createCommand": "echo {{.date}}",
+      "linkCommand": "echo '{{.previous.date}}' '{{.current.date}}' '{{.next.date}}'"
+    }
+  ]
+}
