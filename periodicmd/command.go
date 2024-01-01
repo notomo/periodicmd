@@ -43,6 +43,58 @@ func (c *Command) Output() string {
 	return c.stdout.String()
 }
 
+func resolveCreateCommand(
+	ctx context.Context,
+	commandTemplate string,
+	targetDate string,
+	stdoutWriter io.Writer,
+	stderrWriter io.Writer,
+) (*Command, error) {
+	return resolveCommand(
+		ctx,
+		commandTemplate,
+		targetDate,
+		map[string]any{
+			"date":   targetDate,
+			"output": "",
+		},
+		stdoutWriter,
+		stderrWriter,
+	)
+}
+
+func resolveLinkCommand(
+	ctx context.Context,
+	commandTemplate string,
+	previousCommand Command,
+	currentCommand Command,
+	nextCommand Command,
+	stdoutWriter io.Writer,
+	stderrWriter io.Writer,
+) (*Command, error) {
+	return resolveCommand(
+		ctx,
+		commandTemplate,
+		currentCommand.Date,
+		map[string]any{
+			"previous": map[string]string{
+				"date":   previousCommand.Date,
+				"output": previousCommand.Output(),
+			},
+			"current": map[string]string{
+				"date":   currentCommand.Date,
+				"output": currentCommand.Output(),
+			},
+			"next": map[string]string{
+				"date":   nextCommand.Date,
+				"output": nextCommand.Output(),
+			},
+		},
+		stdoutWriter,
+		stderrWriter,
+	)
+}
+
 func resolveCommand(
 	ctx context.Context,
 	commandTemplate string,

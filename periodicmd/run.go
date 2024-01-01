@@ -74,14 +74,10 @@ func runTask(
 	createCmds := []Command{}
 	for _, date := range dates {
 		targetDate := date.Format(time.DateOnly)
-		cmd, err := resolveCommand(
+		cmd, err := resolveCreateCommand(
 			ctx,
 			task.CreateCommand,
 			targetDate,
-			map[string]any{
-				"date":   targetDate,
-				"output": "",
-			},
 			stdoutWriter,
 			stderrWriter,
 		)
@@ -104,24 +100,12 @@ func runTask(
 			continue
 		}
 
-		cmd, err := resolveCommand(
+		cmd, err := resolveLinkCommand(
 			ctx,
 			task.LinkCommand,
-			tri.Current.Date,
-			map[string]any{
-				"previous": map[string]string{
-					"date":   tri.Previous.Date,
-					"output": tri.Previous.Output(),
-				},
-				"current": map[string]string{
-					"date":   tri.Current.Date,
-					"output": tri.Current.Output(),
-				},
-				"next": map[string]string{
-					"date":   tri.Next.Date,
-					"output": tri.Next.Output(),
-				},
-			},
+			tri.Previous,
+			tri.Current,
+			tri.Next,
 			stdoutWriter,
 			stderrWriter,
 		)
