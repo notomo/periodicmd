@@ -21,6 +21,7 @@
       "frequency": {
         "weeks": 1
       },
+      "offsetDays": 14,
       "startDate": "2023-12-04",
       "createCommand": "echo {{.date}}",
       "linkCommand": "echo '{{.previous.date}}' '{{.current.date}}' '{{.next.date}}'"

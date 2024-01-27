@@ -26,11 +26,16 @@ func Run(
 		return fmt.Errorf("parse start date: %w", err)
 	}
 
-	targetEnd := targetStart.AddDate(0, 0, offsetDays)
-
 	logger := slog.Default()
 	errs := []error{}
 	for _, task := range tasks {
+		var targetEnd time.Time
+		if task.OffsetDays != nil {
+			targetEnd = targetStart.AddDate(0, 0, *task.OffsetDays)
+		} else {
+			targetEnd = targetStart.AddDate(0, 0, offsetDays)
+		}
+
 		if err := runTask(
 			ctx,
 			task,

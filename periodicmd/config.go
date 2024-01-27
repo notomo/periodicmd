@@ -14,6 +14,7 @@ type Task struct {
 	Name          string        `json:"name"`
 	Frequency     TaskFrequency `json:"frequency"`
 	StartDate     string        `json:"startDate"`
+	OffsetDays    *int          `json:"offsetDays"`
 	CreateCommand string        `json:"createCommand"`
 	LinkCommand   string        `json:"linkCommand"`
 }

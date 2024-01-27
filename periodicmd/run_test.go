@@ -47,4 +47,41 @@ link 2023-12-04:create-2023-12-04 2023-12-11:create-2023-12-11
 			t.Errorf("want %v, but %v:", want, got)
 		}
 	})
+
+	t.Run("execute with task offset days", func(t *testing.T) {
+		var stdoutWriter bytes.Buffer
+		var stderrWriter bytes.Buffer
+
+		if err := periodicmd.Run(
+			context.Background(),
+			[]periodicmd.Task{
+				{
+					Frequency: periodicmd.TaskFrequency{
+						Weeks: 1,
+					},
+					OffsetDays:    ptr(1),
+					StartDate:     "2023-12-04",
+					CreateCommand: "echo create-{{.date}}",
+				},
+			},
+			"2023-12-04",
+			7,
+			false,
+			&stdoutWriter,
+			&stderrWriter,
+		); err != nil {
+			t.Fatal(err)
+		}
+
+		want := `echo create-2023-12-04
+create-2023-12-04
+`
+		if got := stdoutWriter.String(); got != want {
+			t.Errorf("want %v, but %v:", want, got)
+		}
+	})
+}
+
+func ptr[T any](x T) *T {
+	return &x
 }
