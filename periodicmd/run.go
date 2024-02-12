@@ -81,6 +81,7 @@ func runTask(
 		targetDate := date.Format(time.DateOnly)
 		cmd, err := resolveCreateCommand(
 			ctx,
+			task.Name,
 			task.CreateCommand,
 			targetDate,
 			stdoutWriter,

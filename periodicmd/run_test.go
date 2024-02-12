@@ -80,6 +80,39 @@ create-2023-12-04
 			t.Errorf("want %v, but %v:", want, got)
 		}
 	})
+
+	t.Run("execute with task name", func(t *testing.T) {
+		var stdoutWriter bytes.Buffer
+		var stderrWriter bytes.Buffer
+
+		if err := periodicmd.Run(
+			context.Background(),
+			[]periodicmd.Task{
+				{
+					Frequency: periodicmd.TaskFrequency{
+						Weeks: 1,
+					},
+					Name:          "test",
+					StartDate:     "2023-12-04",
+					CreateCommand: "echo create-{{.name}}-{{.date}}",
+				},
+			},
+			"2023-12-04",
+			0,
+			false,
+			&stdoutWriter,
+			&stderrWriter,
+		); err != nil {
+			t.Fatal(err)
+		}
+
+		want := `echo create-test-2023-12-04
+create-test-2023-12-04
+`
+		if got := stdoutWriter.String(); got != want {
+			t.Errorf("want %v, but %v:", want, got)
+		}
+	})
 }
 
 func ptr[T any](x T) *T {

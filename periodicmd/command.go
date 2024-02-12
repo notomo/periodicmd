@@ -45,6 +45,7 @@ func (c *Command) Output() string {
 
 func resolveCreateCommand(
 	ctx context.Context,
+	taskName string,
 	commandTemplate string,
 	targetDate string,
 	stdoutWriter io.Writer,
@@ -55,8 +56,8 @@ func resolveCreateCommand(
 		commandTemplate,
 		targetDate,
 		map[string]any{
-			"date":   targetDate,
-			"output": "",
+			"date": targetDate,
+			"name": taskName,
 		},
 		stdoutWriter,
 		stderrWriter,

@@ -6,7 +6,7 @@
         "months": 3
       },
       "startDate": "2023-10-01",
-      "createCommand": "echo {{.date}}"
+      "createCommand": "echo {{.name}} {{.date}}"
     },
     {
       "name": "once per a month",
