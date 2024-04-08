@@ -17,9 +17,10 @@ func dates(ts []time.Time) []string {
 
 func TestPeriodicDates(t *testing.T) {
 	t.Run("returns empty if time range is zero", func(t *testing.T) {
-		periodicStart := time.Now()
-		targetStart := time.Now()
-		targetEnd := time.Now()
+		now := time.Now()
+		periodicStart := now
+		targetStart := now
+		targetEnd := now.Add(-1 * time.Second)
 
 		got := PeriodicDates(
 			periodicStart,
