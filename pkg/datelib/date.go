@@ -13,6 +13,24 @@ func Parse(date string) (time.Time, error) {
 	return time.Parse(time.DateOnly, date)
 }
 
+func isYearOnly(
+	frequencyYears int,
+	frequencyMonths int,
+	frequencyWeeks int,
+	frequencyDays int,
+) bool {
+	return frequencyYears > 0 && frequencyMonths == 0 && frequencyWeeks == 0 && frequencyDays == 0
+}
+
+func isMonthOnly(
+	frequencyYears int,
+	frequencyMonths int,
+	frequencyWeeks int,
+	frequencyDays int,
+) bool {
+	return frequencyYears == 0 && frequencyMonths > 0 && frequencyWeeks == 0 && frequencyDays == 0
+}
+
 func PeriodicDates(
 	periodicStart time.Time,
 	targetStart time.Time,
@@ -29,6 +47,13 @@ func PeriodicDates(
 
 	loopDate := periodicStart.AddDate(0, 0, offsetDays)
 	periodicStartNextDate := periodicStart.AddDate(frequencyYears, frequencyMonths, frequencyWeeks*7+frequencyDays)
+
+	if isYearOnly(frequencyYears, frequencyMonths, frequencyWeeks, frequencyDays) {
+		loopDate = time.Date(loopDate.Year(), periodicStart.Month(), periodicStart.Day(), 0, 0, 0, 0, loopDate.Location())
+	}
+	if isMonthOnly(frequencyYears, frequencyMonths, frequencyWeeks, frequencyDays) {
+		loopDate = time.Date(loopDate.Year(), loopDate.Month(), periodicStart.Day(), 0, 0, 0, 0, loopDate.Location())
+	}
 	if loopDate.Before(periodicStartNextDate) {
 		loopDate = periodicStart
 	}
