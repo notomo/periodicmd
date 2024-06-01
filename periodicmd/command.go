@@ -31,7 +31,7 @@ func (c *Command) Run(dryRun bool) error {
 	}
 
 	if err := c.cmd.Run(); err != nil {
-		return fmt.Errorf("run command: %w", err)
+		return fmt.Errorf("run command `%s`: %w", c.cmd.String(), err)
 	}
 	return nil
 }
